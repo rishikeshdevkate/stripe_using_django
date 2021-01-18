@@ -1,4 +1,4 @@
-"""djangostripe URL Configuration
+"""inkedsoul URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -14,9 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include # new
+from django.urls import path, include
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger import renderers
+
+schema_view = get_schema_view(title="Backend API", public=True,
+                              renderer_classes=[renderers.OpenAPIRenderer, renderers.SwaggerUIRenderer],
+                              permission_classes=(),)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('payments.urls')), # new
+    path('', schema_view),
+    path('api/payment/', include("stripe_payment.urls")),
+
 ]
